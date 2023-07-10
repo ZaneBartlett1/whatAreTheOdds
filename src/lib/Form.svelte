@@ -6,6 +6,7 @@
     import ethnicityDataObject from "../data/ethnicity";
     import weightDataObject from "../data/notObese";
     import religionObject from "../data/religion";
+    import sizeDataObject from "../data/size";
 
     let { ageData, ageDataSource, totalM, totalF } = ageDataObject;
     let { incomeData, incomeDataSource } = incomeDataObject;
@@ -14,6 +15,7 @@
     let { ethnicityData, ethnicityDataSource } = ethnicityDataObject;
     let { weightData, weightDataSource } = weightDataObject;
     let { affiliationData, affiliationDataSource } = religionObject;
+    let { sizeData, sizeDataSource } = sizeDataObject;
 
     let ageFrom = "";
     let ageTo = "";
@@ -21,6 +23,9 @@
     let incomeTo = "";
     let heightFrom = "";
     let heightTo = "";
+    let sizeFrom = "";
+    let sizeTo = "";
+
     let isObese = false;
 
     let populations = populationData;
@@ -34,6 +39,7 @@
         height: heightData,
         income: incomeData,
         age: ageData,
+        size: sizeData,
     };
 
     let likelyNumber = null;
@@ -107,12 +113,23 @@
             );
         }
 
-        // The calculation of likelyNumber stays the same
+        let sizeLikelihood = 1;
+        if (selectedSex === "M" && sizeFrom !== "" && sizeTo !== "") {
+            sizeLikelihood = 0;
+            let inRange = false;
+            for (let sizeGroup of Object.keys(sizeData)) {
+                if (sizeGroup === sizeFrom) inRange = true;
+                if (inRange) sizeLikelihood += sizeData[sizeGroup][selectedSex];
+                if (sizeGroup === sizeTo) inRange = false;
+            }
+        }
+
         likelyNumber =
             selectedCityPopulation *
             heightLikelihood *
             incomeLikelihood *
             ageLikelihood *
+            sizeLikelihood *
             sexRatios[selectedSex] *
             ethnicityLikelihood *
             weightLikelihood *
@@ -151,6 +168,13 @@
             : Object.keys(heightData).slice(
                   Object.keys(heightData).indexOf(heightFrom)
               );
+
+    $: sizeToOptions =
+        sizeFrom === ""
+            ? []
+            : Object.keys(sizeData).slice(
+                  Object.keys(sizeData).indexOf(sizeFrom)
+              );
 </script>
 
 <div class="form-option">
@@ -170,6 +194,38 @@
         </select>
     </div>
 </div>
+
+{#if selectedSex === "M"}
+    <div class="form-option">
+        <label>
+            <span class="label-text">
+                <sup>
+                    <a href={sizeDataSource} target="_blank" rel="noopener"
+                        >[8]</a
+                    >
+                </sup>
+                Penile Length:
+            </span>
+        </label>
+        <div class="form-option-content">
+            Between &#20;
+            <select bind:value={sizeFrom}>
+                <option disabled selected value="">-- select size --</option>
+                {#each Object.keys(sizeData) as sizeOption}
+                    <option value={sizeOption}>{sizeOption}</option>
+                {/each}
+            </select>
+            &#20; and &#20;
+            <select bind:value={sizeTo}>
+                <option disabled selected value="">-- select size --</option>
+                {#each sizeToOptions as sizeOption (sizeOption)}
+                    <option value={sizeOption}>{sizeOption}</option>
+                {/each}
+            </select>
+            &#20; inches
+        </div>
+    </div>
+{/if}
 
 <div class="form-option">
     <label>
@@ -347,11 +403,15 @@
     </div>
 </div>
 
-<button on:click={calculate}>Calculate</button>
+<div>
+    <button on:click={calculate}>Calculate</button>
+</div>
 
-{#if likelyNumber !== null}
-    <p>
-        There are likely about {Math.round(likelyNumber).toLocaleString()} people
-        {selectedCitiesDescription} who meet these criteria.
-    </p>
-{/if}
+<div id="ending-paragraph">
+    {#if likelyNumber !== null}
+        <p>
+            There are likely about {Math.round(likelyNumber).toLocaleString()} people
+            {selectedCitiesDescription} who meet these criteria.
+        </p>
+    {/if}
+</div>
