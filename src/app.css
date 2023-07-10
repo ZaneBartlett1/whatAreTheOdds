@@ -88,7 +88,7 @@ label {
 
 .label-text {
   display: inline-block;
-  width: 100px;
+  min-width: 200px;
   text-align: right;
 }
 
@@ -131,4 +131,32 @@ sup {
   vertical-align: baseline;
   position: relative;
   top: -0.5em;
+}
+
+p {
+  display: block;
+  word-wrap: break-word;
+  /* Allow long words to be able to be broken and wrap onto the next line */
+  overflow-wrap: break-word;
+  /* Break words to prevent overflow */
+  max-width: 100%;
+  /* Set a maximum width for the paragraph */
+}
+
+#ending-paragraph {
+  max-width: 500px;
+  display: block;
+  margin: auto;
+  text-align: center;
+}
+
+li {
+  text-align: start;
+  margin-bottom: 5px;
+}
+
+#notes {
+  display: block;
+  margin: auto;
+  max-width: 600px;
 }
