@@ -3,7 +3,7 @@
 </script>
 
 <main>
-  <h1>What are the odds?</h1>
+  <h1>Are you one in a million?</h1>
   <div class="form-container">
     <Form />
   </div>

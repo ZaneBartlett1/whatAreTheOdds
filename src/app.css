@@ -3,7 +3,7 @@
   line-height: 1.5;
   font-weight: 400;
 
-  color-scheme: light dark;
+  color-scheme: dark;
   color: rgba(255, 255, 255, 0.87);
   background-color: #242424;
 
@@ -97,14 +97,24 @@ label {
   align-items: flex-start;
 }
 
-.multi-select-box {
+#multi-select-box-city {
+  min-width: 250px;
   min-height: 300px;
+}
+
+#multi-select-box-ethnicity {
+  min-width: 250px;
+  min-height: 170px;
+}
+
+#multi-select-box-affiliations {
+  min-width: 250px;
+  min-height: 330px;
 }
 
 .select-width {
   min-width: 175px;
 }
-
 
 .age-checkboxes {
   display: grid;
@@ -117,17 +127,8 @@ label {
   text-align: start;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-
-  a:hover {
-    color: #747bff;
-  }
-
-  button {
-    background-color: #f9f9f9;
-  }
+sup {
+  vertical-align: baseline;
+  position: relative;
+  top: -0.5em;
 }
