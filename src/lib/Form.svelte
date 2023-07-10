@@ -5,6 +5,7 @@
     import ageDataObject from "../data/age";
     import ethnicityDataObject from "../data/ethnicity";
     import weightDataObject from "../data/notObese";
+    import religionObject from "../data/religion";
 
     let { ageData, ageDataSource, totalM, totalF } = ageDataObject;
     let { incomeData, incomeDataSource } = incomeDataObject;
@@ -12,6 +13,7 @@
     let { populationData, populationDataSource } = populationDataObject;
     let { ethnicityData, ethnicityDataSource } = ethnicityDataObject;
     let { weightData, weightDataSource } = weightDataObject;
+    let { affiliationData, affiliationDataSource } = religionObject;
 
     let ageFrom = "";
     let ageTo = "";
@@ -26,6 +28,7 @@
     let selectedCitiesDescription = "";
     let selectedSex = "";
     let selectedEthnicities = [];
+    let selectedAffiliations = [];
 
     let likelihoods = {
         height: heightData,
@@ -96,6 +99,15 @@
             weightLikelihood = weightData[state] / 100; // Divide by 100 to get the ratio
         }
 
+        let affiliationLikelihood = 1;
+        if (selectedAffiliations.length > 0) {
+            affiliationLikelihood = selectedAffiliations.reduce(
+                (sum, affiliation) => sum + affiliationData[affiliation],
+                0
+            );
+        }
+
+        // The calculation of likelyNumber stays the same
         likelyNumber =
             selectedCityPopulation *
             heightLikelihood *
@@ -103,7 +115,8 @@
             ageLikelihood *
             sexRatios[selectedSex] *
             ethnicityLikelihood *
-            weightLikelihood;
+            weightLikelihood *
+            affiliationLikelihood;
     }
 
     function getSelectedCitiesDescription(selectedCity) {
@@ -258,7 +271,7 @@
         </span>
     </label>
     <div class="form-option-content">
-        <select multiple class="multi-select-box" bind:value={selectedCity}>
+        <select multiple id="multi-select-box-city" bind:value={selectedCity}>
             <option disabled value="">-- select city --</option>
             {#each Object.keys(populationData).sort() as city}
                 <option value={city}>{city}</option>
@@ -281,7 +294,7 @@
     <div class="form-option-content">
         <select
             multiple
-            class="multi-select-box"
+            id="multi-select-box-ethnicity"
             bind:value={selectedEthnicities}
         >
             <option disabled value="">-- select ethnicity --</option>
@@ -306,6 +319,31 @@
     <div class="form-option-content">
         <input type="checkbox" bind:checked={isObese} />
         <label for="obese">Not Obese</label>
+    </div>
+</div>
+
+<div class="form-option">
+    <label>
+        <span class="label-text">
+            <sup>
+                <a href={affiliationDataSource} target="_blank" rel="noopener">
+                    [7]
+                </a>
+            </sup>
+            Religious Affiliations:
+        </span>
+    </label>
+    <div class="form-option-content">
+        <select
+            multiple
+            id="multi-select-box-affiliations"
+            bind:value={selectedAffiliations}
+        >
+            <option disabled value="">-- select affiliations --</option>
+            {#each Object.keys(affiliationData) as affiliation}
+                <option value={affiliation}>{affiliation}</option>
+            {/each}
+        </select>
     </div>
 </div>
 
