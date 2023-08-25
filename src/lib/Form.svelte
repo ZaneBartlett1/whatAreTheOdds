@@ -274,7 +274,7 @@
     </select>
 
     <label for="age-end-select">
-      <span class="follow-up-dropdown">&#20 to &#20</span>
+      <span class="follow-up-dropdown">&nbsp; to &nbsp;</span>
     </label>
 
     <select id="age-end-select" bind:value={ageTo}>
@@ -303,12 +303,14 @@
     <select id="height-start-select" bind:value={heightFrom}>
       <option disabled selected value="">-- select start height --</option>
       {#each Object.keys(heightData) as heightOption}
-        <option value={heightOption}>{heightOption.split("-")[0]}</option>
+        <option value={heightOption}
+          >{heightOption.split("-")[0].replace(".", "'")}</option
+        >
       {/each}
     </select>
 
     <label for="height-end-select">
-      <span class="follow-up-dropdown">&#20 to &#20</span>
+      <span class="follow-up-dropdown">&nbsp; to &nbsp;</span>
     </label>
 
     <select id="height-end-select" bind:value={heightTo}>
@@ -316,8 +318,8 @@
       {#each heightToOptions as heightOption (heightOption)}
         <option value={heightOption}
           >{heightOption.includes("-")
-            ? heightOption.split("-")[1]
-            : heightOption}</option
+            ? heightOption.split("-")[1].replace(".", "'")
+            : heightOption.replace(".", "'")}</option
         >
       {/each}
     </select>
@@ -342,7 +344,7 @@
     </select>
 
     <label for="income-end-select">
-      <span class="follow-up-dropdown">&#20 to &#20</span>
+      <span class="follow-up-dropdown">&nbsp; to &nbsp;</span>
     </label>
 
     <select id="income-end-select" bind:value={incomeTo}>
@@ -377,7 +379,7 @@
       </select>
 
       <label for="penis-end-length-select">
-        <span class="follow-up-dropdown">&#20 to &#20</span>
+        <span class="follow-up-dropdown">&nbsp; to &nbsp;</span>
       </label>
 
       <select id="penis-end-length-select" bind:value={sizeTo}>

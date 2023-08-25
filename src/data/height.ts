@@ -57,18 +57,17 @@ let heightData = {
         "M": 0.002,
         "F": 0.0
     }
-}
-    ;
+};
 
 let totalM = 0, totalF = 0;
 for (let heightGroup in heightData) {
     totalM += heightData[heightGroup]["M"];
     totalF += heightData[heightGroup]["F"];
-}
+};
 
 for (let heightGroup in heightData) {
     heightData[heightGroup]["M"] /= totalM;
     heightData[heightGroup]["F"] /= totalF;
-}
+};
 
 export default { heightData, heightDataSource };
